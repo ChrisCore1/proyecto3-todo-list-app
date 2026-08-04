@@ -15,11 +15,11 @@ class TaskRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
-            'descripction' => ['nullable', 'string'],
+            'description' => ['nullable', 'string'],
             'category_id' => ['nullable', 'integer', 'exists:categories,category_id'],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['integer', 'exists:tags,tag_id'],
-            'status' => ['required', 'boolean']
+            'status' => 'boolean'
         ];
     }
 }
