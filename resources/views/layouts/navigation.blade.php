@@ -14,10 +14,10 @@
                 TodoList App
             </a>
             <div class="navbar-nav">
-                <a class="nav-link" href="{{ 'tasks.index' }}">
+                <a class="nav-link" href="{{ route('tasks.index') }}">
                     Tareas
                 </a>
-                <a class="nav-link" href="{{ 'categories.index' }}">
+                <a class="nav-link" href="{{ route('categories.index') }}">
                     Categorias
                 </a>
                 <a class="nav-link" href="{{ 'tags.index' }}">
