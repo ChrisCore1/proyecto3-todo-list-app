@@ -20,7 +20,7 @@
                 <a class="nav-link" href="{{ route('categories.index') }}">
                     Categorias
                 </a>
-                <a class="nav-link" href="{{ 'tags.index' }}">
+                <a class="nav-link" href="{{ route('tags.index') }}">
                     Etiquetas
                 </a>
             </div>
