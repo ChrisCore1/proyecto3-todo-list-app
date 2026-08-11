@@ -10,19 +10,18 @@ class TagController extends Controller
 {
     public function index()
     {
-        $tags = Tag::all();
+        $tags = Tag::paginate(10);
 
         if($tags->isEmpty()){
             $data = [
                 'message' => 'No hay registros de etiquetas',
-                'status' => 200
+                'data' => []
             ];
             return response()->json($data, 200);
         }
 
         $data = [
             'tags' => $tags,
-            'status' => 200
         ];
         return response()->json($data, 200);
     }
@@ -32,71 +31,45 @@ class TagController extends Controller
         $tag = Tag::create($request->validated());
 
         $data = [
-            'message' => 'Etiqueta creada',
-            'tag' => $tag,
-            'status' => 201
+            'tag' => $tag
         ];
         return response()->json($data, 201);
     }
 
     public function show($id)
     {   
-        $tag = Tag::find($id);
-
-        if(!$tag){
-            $data = [
-                'message' => 'Etiqueta no encontrada',
-                'status' => 404
-            ];
-            return response()->json($data, 404);
-        }
+        $tag = Tag::findOrFail($id);
 
         $data = [
-            'tag' => $tag,
-            'status' => 200
+            'tag' => $tag
         ];
         return response()->json($data, 200);
     }
 
     public function update(TagRequest $request, $id)
     {
-        $tag = Tag::find($id);
-
-        if(!$tag){
-            $data = [
-                'message' => 'Etiqueta no encontrada',
-                'status' => 404
-            ];
-            return response()->json($data, 404);
-        }
+        $tag = Tag::findOrFail($id);
 
         $tag->update($request->validated());
 
         $data = [
             'messsage' => 'Etiqueta actualizada',
-            'tag' => $tag,
-            'status' => 200
+            'tag' => $tag
         ];
         return response()->json($data, 200);
     }
 
     public function destroy($id)
     {
-        $tag = Tag::find($id);
+        $tag = Tag::findOrFail($id);
 
-        if(!$tag){
-            $data = [
-                'message' => 'Etiqueta no encontrada',
-                'status' => 404
-            ];
-            return response()->json($data, 404);
-        }
+        $deleted_data = $tag;
 
         $tag->delete();
 
         $data = [
             'message' => 'Etiqueta eliminada',
-            'status' => 200
+            'deleted_tag' => $deleted_data
         ];
         return response()->json($data, 200);
     }

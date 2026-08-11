@@ -10,19 +10,18 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::paginate(10);
 
         if ($categories->isEmpty()){
             $data = [
                 'message' => 'No hay registros de categorias',
-                'status' => 200
+                'data' => []
             ];
             return response()->json($data, 200);
         }
 
         $data = [
-            'categories' => $categories,
-            'status' => 200
+            'categories' => $categories
         ];
 
         return response()->json($data, 200);
@@ -33,71 +32,45 @@ class CategoryController extends Controller
         $category = Category::create($request->validated());
 
         $data = [
-            'message' => 'Categoria creada',
-            'category' => $category,
-            'status' => 201
+            'category' => $category
         ];
         return response()->json($data, 201);
     }
 
     public function show($id)
     {
-        $category = Category::find($id);
-
-        if (!$category){
-            $data = [
-                'message' => 'Categoria no encontrada',
-                'status' => 404
-            ];
-            return response()->json($data, 404);
-        }
+        $category = Category::findOrFail($id);
 
         $data = [
-            'category' => $category,
-            'status' => 200
+            'category' => $category
         ];
         return response()->json($data, 200);
     }
 
     public function update(CategoryRequest $request, $id)
     {   
-        $category = Category::find($id);  
-        
-        if (!$category){
-            $data = [
-                'message' => 'Categoria no encontrada',
-                'status' => 404
-            ];
-            return response()->json($data, 404);
-        }
+        $category = Category::findOrFail($id);  
 
         $category->update($request->validated());
 
         $data = [
             'message' => 'Categoria actualizada',
-            'category' => $category,
-            'status' => 200
+            'category' => $category
         ];
         return response()->json($data, 200);
     }
 
     public function destroy($id)
     {   
-        $category = Category::find($id);
+        $category = Category::findOrFail($id);
 
-        if(!$category){
-            $data = [
-                'message' => 'Categoria no encontrada',
-                'status' => 404
-            ];
-            return response()->json($data, 404);
-        }
+        $deleted_data = $category;
 
         $category->delete();
 
         $data = [
             'message' => 'Categoria eliminada',
-            'status' => 200
+            'deleted_category' => $deleted_data
         ];
         return response()->json($data, 200);
     }

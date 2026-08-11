@@ -10,19 +10,18 @@ class TaskController extends Controller
 {
     public function index()
     {
-        $tasks = Task::with(['category', 'tags'])->get();
+        $tasks = Task::with(['category', 'tags'])->paginate(10);
 
         if($tasks->isEmpty()){
             $data = [
                 'message' => 'No hay registros de tareas',
-                'status' => 200
+                'data' => []
             ];
             return response()->json($data, 200);
         }
 
         $data = [
             'tasks' => $tasks,
-            'status' => 200
         ];
         return response()->json($data, 200);
     }
@@ -38,9 +37,7 @@ class TaskController extends Controller
         $task->load(['category', 'tags']);
 
         $data = [
-            'message' => 'Tarea creada',
-            'task' => $task,
-            'status' => 201
+            'task' => $task
         ];
 
         return response()->json($data, 201);
@@ -48,36 +45,19 @@ class TaskController extends Controller
 
     public function show($id)
     {   
-        $task = Task::find($id);
-
-        if(!$task){
-            $data = [
-                'message' => 'Tarea no encontrada',
-                'status' => 404
-            ];
-            return response()->json($data, 404);
-        }
+        $task = Task::findOrFail($id);
 
         $task->load(['category', 'tags']);
 
         $data = [
-            'task' => $task,
-            'status' => 200
+            'task' => $task
         ];
         return response()->json($data, 200);
     }
 
     public function update(TaskRequest $request, $id)
     {
-        $task = Task::find($id);
-
-        if(!$task){
-            $data = [
-                'message' => 'Tarea no encontrada',
-                'status' => 404
-            ];
-            return response()->json($data, 404);
-        }        
+        $task = Task::findOrFail($id);    
 
         $task->update($request->validated());
         $task->tags()->sync($request->tags ?? []);
@@ -85,29 +65,22 @@ class TaskController extends Controller
 
         $data = [
             'message' => 'Tarea actualizada',
-            'task' => $task,
-            'status' => 200
+            'task' => $task
         ];
         return response()->json($data, 200);
     }
 
     public function destroy($id)
     {
-        $task = Task::find($id);
+        $task = Task::findOrFail($id);
 
-        if(!$task){
-            $data = [
-                'message' => 'Tarea no encontrada',
-                'status' => 404
-            ];
-            return response()->json($data, 404);
-        }
+        $deleted_data = $task;
 
         $task->delete();
 
         $data = [
             'message' => 'Tarea eliminada',
-            'status' => 200
+            'deleted_task' => $deleted_data
         ];
         return response()->json($data, 200);
     }
