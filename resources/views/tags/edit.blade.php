@@ -16,7 +16,8 @@
                         <label for="name_tag" class="form-label">
                             <i class="bi bi-tag-fill"></i> Nombre de la Etiqueta
                         </label>
-                        <input type="text" name="name_tag" id="name_tag" class="form-control" value="{{ old('name_tag', $tag->name_tag) }}" required>
+                        <input type="text" name="name_tag" id="name_tag" class="form-control @error('name_tag') is-invalid @enderror" value="{{ old('name_tag', $tag->name_tag) }}">
+                        @error('name_tag') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
 
                     <div class="d-flex justify-content-between">

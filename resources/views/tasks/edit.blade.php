@@ -15,7 +15,8 @@
                         <label for="title" class="form-label">
                             <i class="bi bi-asterisk"></i> Titulo
                         </label>
-                        <input type="text" name="title" id="title" class="form-control" value="{{ old('title', $task->title) }}" required>
+                        <input type="text" name="title" id="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title', $task->title) }}">
+                        @error('title') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
 
                     <div class="mb-3">
@@ -29,7 +30,7 @@
                         <label for="category_id" class="form-label">
                             <i class="bi bi-bookmark-star-fill"></i> Seleccione una categoria
                         </label>
-                        <select name="category_id" id="category_id" class="form-select">
+                        <select name="category_id" id="category_id" class="form-select @error('category_id') is-invalid @enderror">
                             <option value="">
                                 Ninguna
                             </option>
@@ -39,6 +40,7 @@
                                 </option>
                             @endforeach
                         </select>
+                        @error('category_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
 
                     <div class="mb-3">
@@ -48,7 +50,7 @@
                         @php
                             $currentTagIds = $task->tags->pluck('tag_id')->toArray();
                         @endphp
-                        <div class="border rounded p-3 bg-white shadow-sm" style="max-height: 150px; overflow-y: auto;">
+                        <div class="border rounded p-3 bg-white shadow-sm @error('tags.*') border-danger @enderror" style="max-height: 150px; overflow-y: auto;">
                             @forelse ($tags as $tag)
                                 <div class="form-check mb-2">
                                     <input class="form-check-input" type="checkbox" name="tags[]" value="{{ $tag->tag_id }}" id="tag_{{ $tag->tag_id }}" {{ in_array($tag->tag_id, old('tags', $currentTagIds)) ? 'checked' : '' }} style="cursor: pointer;">
@@ -64,6 +66,7 @@
                             @endforelse
 
                         </div>
+                        @error('tags.*') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                     </div>
 
                     <div class="d-flex justify-content-between">

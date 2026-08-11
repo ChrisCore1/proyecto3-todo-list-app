@@ -22,4 +22,12 @@ class CategoryRequest extends FormRequest
             ],
         ];
     }
+    public function messages(): array
+    {
+        return [
+            'name_category.required' => 'Es necesario colocar un nombre!',
+            'name_category.max' => 'El nombre no puede tener mas de :max caracteres',
+            'name_category.unique' => 'Ya existe una categoria con ese mismo nombre!'
+        ];
+    }
 }

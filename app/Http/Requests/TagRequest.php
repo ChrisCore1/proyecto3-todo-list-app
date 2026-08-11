@@ -22,4 +22,12 @@ class TagRequest extends FormRequest
             ],
         ];
     }
+    public function messages(): array
+    {
+        return [
+            'name_tag.required' => 'Es necesario colocar un nombre!',
+            'name_tag.max' => 'El nombre no puede tener mas de :max caracteres',
+            'name_tag.unique' => 'Ya existe una etiqueta con ese mismo nombre!'
+        ];
+    }
 }

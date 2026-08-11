@@ -22,4 +22,13 @@ class TaskRequest extends FormRequest
             'status' => 'boolean'
         ];
     }
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'Es obligatorio colocar un titulo!',
+            'title.max' => 'El titulo no debe tener mas de :max caracteres',
+            'category_id.exists' => 'No existe la categoria seleccionada',
+            'tags.*.exists' => 'No existen algunas de las etiquetas seleccionadas'
+        ];
+    }
 }

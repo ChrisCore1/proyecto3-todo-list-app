@@ -16,7 +16,8 @@
                         <label for="name_category" class="form-label">
                             <i class="bi bi-bookmark-star-fill"></i> Nombre de la Categoria
                         </label>
-                        <input type="text" name="name_category" id="name_category" class="form-control" value="{{ old('name_category', $category->name_category) }}" required>
+                        <input type="text" name="name_category" id="name_category" class="form-control @error('name_category') is-invalid @enderror" value="{{ old('name_category', $category->name_category) }}">
+                        @error('name_category') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
 
                     <div class="d-flex justify-content-between">
